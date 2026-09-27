@@ -1,4 +1,5 @@
-/* Le logo de branding n'a qu'un viewBox : sans taille imposée, il occupe toute la barre. */
+/* Marge entre le logo et le titre ; la taille (32 px) est portée par le SVG lui-même, pour ne pas
+   dépendre de cette feuille, que les navigateurs peuvent garder en cache dans sa version vide. */
 #logo {
   width: 32px;
   height: 32px;
