@@ -36,7 +36,7 @@ jobs:
 
       - run: dotnet tool update -g docfx
 
-      - run: docfx GlpiNg.Plugins.Sdk/docs/docfx.json
+      - run: docfx GlpiNg.Plugins.Sdk/docs/docfx.json --warningsAsErrors
 
       - uses: actions/upload-pages-artifact@v5
         with:
