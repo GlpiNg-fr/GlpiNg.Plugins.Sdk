@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "src": [
+        { "src": "..", "files": ["GlpiNg.Plugins.Sdk.csproj"] },
+        { "src": "../../GlpiNg.Modules.Abstractions", "files": ["GlpiNg.Modules.Abstractions.csproj"] }
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [{ "files": ["index.md", "toc.yml", "api/**.yml", "api/index.md"] }],
+    "resource": [{ "files": ["images/**"] }],
+    "output": "_site",
+    "template": ["default", "modern"],
+    "globalMetadata": {
+      "_appName": "GlpiNg.Plugins.Sdk",
+      "_appTitle": "GlpiNg.Plugins.Sdk",
+      "_appLogoPath": "images/logo.png",
+      "_appFaviconPath": "images/logo.png",
+      "_lang": "fr",
+      "_enableSearch": true
+    }
+  }
+}
