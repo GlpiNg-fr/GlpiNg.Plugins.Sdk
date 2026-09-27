@@ -1,0 +1,6 @@
+/* Le logo de branding n'a qu'un viewBox : sans taille imposée, il occupe toute la barre. */
+#logo {
+  width: 32px;
+  height: 32px;
+  margin-right: .5rem;
+}

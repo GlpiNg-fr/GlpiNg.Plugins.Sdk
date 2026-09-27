@@ -13,12 +13,12 @@
     "content": [{ "files": ["index.md", "toc.yml", "api/**.yml", "api/index.md"] }],
     "resource": [{ "files": ["images/**"] }],
     "output": "_site",
-    "template": ["default", "modern"],
+    "template": ["default", "modern", "template"],
     "globalMetadata": {
       "_appName": "GlpiNg.Plugins.Sdk",
       "_appTitle": "GlpiNg.Plugins.Sdk",
-      "_appLogoPath": "images/logo.png",
-      "_appFaviconPath": "images/logo.png",
+      "_appLogoPath": "images/logo.svg",
+      "_appFaviconPath": "images/logo.svg",
       "_lang": "fr",
       "_enableSearch": true
     }
