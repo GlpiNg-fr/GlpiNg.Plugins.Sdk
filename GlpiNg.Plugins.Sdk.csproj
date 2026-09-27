@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>GlpiNg.Plugins</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+    <!-- Paquet NuGet que les développeurs référencent pour écrire un plugin (dotnet pack). -->
+    <PackageId>GlpiNg.Plugins.Sdk</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>AnthoDingo</Authors>
+    <Description>Contrats pour écrire un plugin GlpiNg : point d'entrée IGlpiNgPlugin et contrats de contribution des modules (menu, rapports, tâches cron...).</Description>
+    <PackageTags>glping;plugin;sdk</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Transmis aux plugins par le paquet : pages Razor, contrôleurs et DI sans autre référence. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Devient une dépendance NuGet du paquet : Abstractions est empaqueté lui aussi. -->
+    <ProjectReference Include="..\GlpiNg.Modules.Abstractions\GlpiNg.Modules.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>
