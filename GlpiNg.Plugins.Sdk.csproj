@@ -15,6 +15,10 @@
     <Description>Contrats pour écrire un plugin GlpiNg : point d'entrée IGlpiNgPlugin et contrats de contribution des modules (menu, rapports, tâches cron...).</Description>
     <PackageTags>glping;plugin;sdk</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/GlpiNg-fr/GlpiNg</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/GlpiNg-fr/GlpiNg.Plugins.Sdk</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
