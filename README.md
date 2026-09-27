@@ -64,3 +64,7 @@ défaut) : le nom du dossier doit être celui de l'assembly. Redémarrez GlpiNg 
 - Les fichiers statiques (`wwwroot`) d'un plugin ne sont pas servis.
 - Les dépendances privées de plugins différents partagent un même contexte de chargement : deux
   plugins exigeant deux versions d'une même bibliothèque ne peuvent pas cohabiter.
+
+## Licence
+
+[GNU Affero General Public License v3.0](https://github.com/GlpiNg-fr/GlpiNg.Plugins.Sdk/blob/main/LICENSE).

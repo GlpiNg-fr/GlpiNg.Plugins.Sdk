@@ -66,3 +66,7 @@ the folder name must match the assembly name. Restart GlpiNg after installing.
 - A plugin's static files (`wwwroot`) are not served.
 - Private dependencies of different plugins share a single load context: two plugins requiring
   two versions of the same library cannot coexist.
+
+## License
+
+[GNU Affero General Public License v3.0](https://github.com/GlpiNg-fr/GlpiNg.Plugins.Sdk/blob/main/LICENSE).
