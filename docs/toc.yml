@@ -1,4 +1,6 @@
 - name: Guide
   href: index.md
+- name: English
+  href: en/index.md
 - name: API
   href: api/

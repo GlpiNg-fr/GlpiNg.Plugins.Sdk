@@ -10,7 +10,7 @@
     }
   ],
   "build": {
-    "content": [{ "files": ["index.md", "toc.yml", "api/**.yml", "api/index.md"] }],
+    "content": [{ "files": ["index.md", "en/index.md", "toc.yml", "api/**.yml", "api/index.md"] }],
     "resource": [{ "files": ["images/**"] }],
     "output": "_site",
     "template": ["default", "modern", "template"],
@@ -21,6 +21,9 @@
       "_appFaviconPath": "images/logo.svg",
       "_lang": "fr",
       "_enableSearch": true
+    },
+    "fileMetadata": {
+      "_lang": { "en/**": "en" }
     }
   }
 }
