@@ -1,0 +1,19 @@
+<Project>
+
+  <!--
+    Importé automatiquement par tout projet qui référence le paquet GlpiNg.Plugins.Sdk.
+
+    Un plugin est une bibliothèque de classes ordinaire : son dossier « wwwroot » ne serait donc
+    pas copié à la sortie, et ses fichiers statiques (CSS, JS, images) n'arriveraient jamais à
+    côté de la DLL publiée. Ces cibles les y déposent, et l'hôte les sert ensuite sous
+    « /_content/{NomDuPlugin}/ » — le même chemin qu'ASP.NET Core donne aux bibliothèques de
+    classes Razor, pour qu'un plugin qui deviendrait une RCL n'ait pas à réécrire ses liens.
+  -->
+  <ItemGroup Condition="'$(GlpiNgPluginStaticAssets)' != 'false' AND Exists('$(MSBuildProjectDirectory)/wwwroot')">
+    <None Include="wwwroot/**/*"
+          Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

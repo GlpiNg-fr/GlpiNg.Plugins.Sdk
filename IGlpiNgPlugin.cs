@@ -16,4 +16,24 @@ namespace GlpiNg.Plugins;
 public interface IGlpiNgPlugin
 {
     void ConfigureServices(IServiceCollection services, IConfiguration configuration);
+
+    /// <summary>
+    /// Version de GlpiNg à partir de laquelle ce plugin fonctionne, incluse (« 1.2.0 »).
+    /// <c>null</c> : aucune borne basse.
+    ///
+    /// L'hôte compare sa propre version à cet intervalle <b>avant</b> d'appeler
+    /// <see cref="ConfigureServices"/>. Hors intervalle, le plugin n'est pas chargé du tout : il
+    /// vaut mieux une fonctionnalité absente et signalée qu'un plugin qui s'exécute contre des
+    /// contrats qu'il ne connaît pas.
+    ///
+    /// Seule la partie numérique compte : le suffixe de pré-version et l'empreinte de commit
+    /// (« 1.2.0-RC1+abc1234 ») sont ignorés de part et d'autre.
+    /// </summary>
+    string? MinimumHostVersion => null;
+
+    /// <summary>
+    /// Dernière version de GlpiNg sur laquelle ce plugin a été éprouvé, incluse.
+    /// <c>null</c> : aucune borne haute — le plugin accepte les versions futures.
+    /// </summary>
+    string? MaximumHostVersion => null;
 }
