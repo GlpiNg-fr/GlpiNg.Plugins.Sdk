@@ -4,14 +4,16 @@ using Microsoft.Extensions.DependencyInjection;
 namespace GlpiNg.Plugins;
 
 /// <summary>
-/// Point d'entrée d'un plugin : l'hôte l'instancie au démarrage (constructeur sans paramètre) et
-/// appelle <see cref="ConfigureServices"/> après avoir enregistré ses propres modules — un plugin
-/// se branche donc exactement comme un module intégré (<c>AddXxxModule</c>) : il contribue ses
-/// services et ses <c>IMenuProvider</c>, <c>IReportProvider</c>, <c>ICronTask</c>... au conteneur.
+/// Point d'entrée d'un plugin : l'hôte l'instancie (constructeur sans paramètre) au démarrage, ou
+/// à chaud depuis Configuration &gt; Plugins, et appelle <see cref="ConfigureServices"/>.
 ///
-/// Les pages <c>@page</c> de l'assembly du plugin sont routées sans autre déclaration. Ses
-/// contrôleurs, comme ceux des modules, s'enregistrent par
-/// <c>services.AddControllers().AddApplicationPart(typeof(MonPlugin).Assembly)</c>.
+/// Les services déclarés vont dans un conteneur propre au plugin, qui retombe sur ceux de l'hôte :
+/// c'est ce qui permet de le charger, le mettre à jour et le décharger sans redémarrer. Ses
+/// <c>IMenuProvider</c>, <c>IReportProvider</c> et <c>ICronTask</c> rejoignent ceux de l'hôte ; ses
+/// composants et ses contrôleurs reçoivent ses services par leur constructeur.
+///
+/// Les pages <c>@page</c> de l'assembly, sous <c>/plugins/</c>, sont routées sans autre
+/// déclaration ; ses contrôleurs sont découverts sans <c>AddControllers</c>.
 /// </summary>
 public interface IGlpiNgPlugin
 {

@@ -14,8 +14,11 @@ Dans `MonPlugin.csproj`, empêchez la copie des assemblies fournies par l'hôte 
 copies des contrats coexisteraient) :
 
 ```xml
-<PackageReference Include="GlpiNg.Plugins.Sdk" Version="0.1.0" ExcludeAssets="runtime" />
+<PackageReference Include="GlpiNg.Plugins.Sdk" Version="0.2.0" ExcludeAssets="runtime" />
 ```
+
+Visez une version du SDK que l'hôte possède déjà (celle de GlpiNg ou une plus ancienne) : un plugin
+compilé contre un SDK plus récent que celui de l'hôte est écarté au chargement.
 
 Point d'entrée (une seule classe publique implémentant `IGlpiNgPlugin`) :
 
@@ -30,13 +33,14 @@ public sealed class MonPlugin : IGlpiNgPlugin
     // Intervalle de versions de GlpiNg sur lequel ce plugin fonctionne. Les deux bornes sont
     // incluses et facultatives (null = pas de borne). Hors intervalle, l'hôte n'appelle pas
     // ConfigureServices : le plugin n'est pas chargé, et la raison s'affiche dans
-    // Configuration > Système.
+    // Configuration > Plugins.
     public string? MinimumHostVersion => "1.0.0";
     public string? MaximumHostVersion => null;
 
     public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IMenuProvider, MonMenu>();
+        services.AddScoped<MonService>();
     }
 }
 
@@ -49,21 +53,69 @@ public sealed class MonMenu : IMenuProvider
 }
 ```
 
-Une page (`Pages/Index.razor`) :
+## Pages
+
+Les pages d'un plugin vivent sous `/plugins/` : c'est cette adresse que l'hôte sert pour un lien
+collé ou un rechargement. Un plugin dont une page sort de `/plugins/`, ou reprend une route déjà
+prise par l'hôte ou par un autre plugin, est écarté.
+
+Les services du plugin s'injectent par le **constructeur** du composant. `@inject` reçoit les
+services de l'hôte (`NavigationManager`, `IStoragePaths`...) mais pas ceux du plugin avant .NET 11 —
+l'hôte le signale au chargement.
+
+`Pages/Index.razor` :
 
 ```razor
 @page "/plugins/mon-plugin"
-<h1>Bonjour depuis MonPlugin</h1>
+@inject NavigationManager Nav
+<h1>@_message</h1>
 ```
 
+`Pages/Index.razor.cs` :
+
+```csharp
+public partial class Index(MonService service)
+{
+    private string _message = "";
+    protected override void OnInitialized() => _message = service.Bonjour();
+}
+```
+
+## Services
+
+`ConfigureServices` remplit un conteneur propre au plugin. Un service du plugin reçoit par son
+constructeur ses propres services et ceux de l'hôte (`ILogger<T>`, `IStoragePaths`, la fabrique de
+`DbContext`...). Ce qui rejoint l'hôte :
+
+- `IMenuProvider`, `IReportProvider` et `ICronTask` : menu, rapports et actions automatiques ;
+- les contrôleurs de l'assembly, découverts sans `AddControllers` ; ils reçoivent eux aussi les
+  services du plugin par leur constructeur.
+
+Ne sont pas pris en charge, et signalés au chargement : les services du framework enregistrés par le
+plugin (`AddHttpClient`, `AddControllers`... — il reçoit ceux de l'hôte), les services keyed, les
+génériques ouverts et `IHostedService` (utilisez `ICronTask`). Un plugin ne remplace pas un service
+de l'hôte.
+
 ## Installer
+
+Depuis **Configuration > Plugins**, déposez l'archive zip de la sortie de publication :
+
+```bash
+dotnet publish -c Release -o publish
+cd publish && zip -r ../MonPlugin.zip .
+```
+
+Le plugin est chargé aussitôt, sans redémarrer GlpiNg. Déposer une nouvelle version la remplace à
+chaud : les pages ouvertes passent sur la nouvelle version. Le même écran désactive, recharge et
+supprime un plugin.
+
+On peut aussi publier directement dans le dossier des plugins, puis cliquer sur « Charger » :
 
 ```bash
 dotnet publish -c Release -o <racine du stockage>/plugins/MonPlugin
 ```
 
-L'hôte charge `plugins/<Nom>/<Nom>.dll` au démarrage (la racine du stockage est `data/` par
-défaut) : le nom du dossier doit être celui de l'assembly. Redémarrez GlpiNg après installation.
+Le nom du dossier doit être celui de l'assembly (la racine du stockage est `data/` par défaut).
 
 ## Fichiers statiques
 
@@ -82,8 +134,8 @@ désactive la copie si le projet gère ses fichiers autrement.
 ## Limites actuelles
 
 - Pas de tables en base gérées par l'hôte : un plugin qui persiste des données apporte son propre stockage.
-- Les dépendances privées de plugins différents partagent un même contexte de chargement : deux
-  plugins exigeant deux versions d'une même bibliothèque ne peuvent pas cohabiter.
+- Un plugin déchargé disparaît aussitôt, mais sa mémoire n'est rendue qu'au redémarrage dès qu'une de
+  ses pages a été affichée : Blazor garde en cache les types de composants.
 
 ## Licence
 

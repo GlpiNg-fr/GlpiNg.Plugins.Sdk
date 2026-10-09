@@ -10,7 +10,7 @@
 
     <!-- Paquet NuGet que les développeurs référencent pour écrire un plugin (dotnet pack). -->
     <PackageId>GlpiNg.Plugins.Sdk</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Authors>AnthoDingo</Authors>
     <Description>Contrats pour écrire un plugin GlpiNg : point d'entrée IGlpiNgPlugin et contrats de contribution des modules (menu, rapports, tâches cron...).</Description>
     <PackageTags>glping;plugin;sdk</PackageTags>
